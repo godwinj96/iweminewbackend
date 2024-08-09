@@ -50,6 +50,8 @@ class Papers(models.Model):
     citations = models.IntegerField(null=True, blank=True)
     references = models.TextField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
+    price = models.IntegerField(null=True, blank=True)
+    resource_id = models.CharField(max_length=255, null=True, blank=True)
     # file = models.FileField()
 
     def cover_url(self):
