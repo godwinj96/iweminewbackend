@@ -20,19 +20,25 @@ class TypeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Type
         fields = (
-            '__all__'
+            'id',
+            'name',
         )
 
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
-            '__all__'
+            'id',
+            'name',
+            'type',
         )
 
 class SubCategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
         fields = (
-            '__all__'
+            'id',
+            'name',
+            'type',
+            'category',
         )
