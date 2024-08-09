@@ -1,7 +1,7 @@
 from django.urls import path
 
-from . import api
+from . import api, views
 
 urlpatterns = [
-    path('', api.papers_list, name='api_papers_list')
+    path('', views.PaperList.as_view(), name='api_papers_list')
 ]

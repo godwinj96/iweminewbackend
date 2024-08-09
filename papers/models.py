@@ -9,15 +9,15 @@ from useraccount.models import User
 
 class Type(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=200)
+    name = models.CharField( max_length=200)
 
     def __str__(self):
         return self.name
 
 class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=200)
-    type = models.ManyToManyField(Type)
+    name = models.CharField( max_length=200)
+    type = models.ManyToManyField(Type, blank=True)
 
     def __str__(self):
         return self.name
@@ -25,9 +25,9 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=200)
-    type = models.ManyToManyField(Type)
-    category = models.ManyToManyField(Category)
+    name = models.CharField( max_length=200)
+    type = models.ManyToManyField(Type, blank=True)
+    category = models.ManyToManyField(Category, blank=True)
 
     def __str__(self):
         return self.name
@@ -35,15 +35,15 @@ class SubCategory(models.Model):
 
 
 class Papers(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=200)
+    id = models.UUIDField( default=uuid.uuid4, editable=False)
+    name = models.CharField(primary_key=True, max_length=200)
     author = models.ForeignKey(User, related_name='papers', on_delete=models.CASCADE)
     abstract =  models.TextField(null=True, blank=True)
     cover_page = models.ImageField(upload_to='uploads/covers')
     type = models.ForeignKey(Type, related_name='type', on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, related_name='category', on_delete=models.SET_NULL, null=True)
     subcategory = models.ForeignKey(SubCategory, related_name='subcategory', on_delete=models.SET_NULL, null=True)
-    year_published = models.DateField()
+    year_published = models.DateField(null=True, blank=True)
     date_uploaded = models.DateTimeField(auto_now_add=True,)
     is_open_access = models.BooleanField(null=True, blank=True) 
     is_approved = models.BooleanField(null=True, blank=True)
