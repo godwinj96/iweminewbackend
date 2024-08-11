@@ -32,12 +32,12 @@ class PaperDetail(generics.RetrieveUpdateDestroyAPIView):
         name = self.kwargs.get('name').replace('_', ' ')
         return Papers.objects.filter(name=name)
     
-    def get_object(self):
-        queryset = self.get_queryset()
-        obj = queryset.first()
-        if obj is None:
-            raise NotFound(detail="Not found")
-        return obj
+    # def get_object(self):
+    #     queryset = self.get_queryset()
+    #     obj = queryset.first()
+    #     if obj is None:
+    #         raise NotFound(detail="Not found")
+    #     return obj
     
     
 class TypeList(generics.ListCreateAPIView):

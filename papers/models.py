@@ -45,6 +45,7 @@ class Papers(models.Model):
     subcategory = models.ForeignKey(SubCategory, related_name='subcategory', on_delete=models.SET_NULL, null=True, blank=True)
     year_published = models.DateField(null=True, blank=True)
     date_uploaded = models.DateTimeField(auto_now_add=True,)
+    file_url = models.CharField(max_length=500, null=True, blank=True)
     is_open_access = models.BooleanField(null=True, blank=True) 
     is_approved = models.BooleanField(null=True, blank=True)
     citations = models.IntegerField(null=True, blank=True)
@@ -53,6 +54,7 @@ class Papers(models.Model):
     price = models.IntegerField(null=True, blank=True)
     resource_id = models.CharField(max_length=255, null=True, blank=True)
     # file = models.FileField()
+
 
     def cover_url(self):
         return f"{settings.WEBSITE_URL}{self.image.url}"
