@@ -32,7 +32,7 @@ class CustomUserManager(UserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, db_index=True)
     name = models.CharField(max_length=255, blank=True, null=True)
     avatar = models.ImageField(upload_to='uploads/avatars', null=True, blank=True)
     education = models.CharField(max_length=255, null=True, blank=True)
@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
 
-    date_joined = models.DateTimeField(auto_now_add=True)
+    date_joined = models.DateTimeField(auto_now_add=True, editable=False)
     last_login = models.DateTimeField(blank=True, null=True)
 
     objects = CustomUserManager()

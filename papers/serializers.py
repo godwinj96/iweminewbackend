@@ -54,17 +54,27 @@ class SubCategoryListSerializer(serializers.ModelSerializer):
         return {'name': data}
 
 
+from rest_framework import serializers
+from .models import Papers, Type, Category, SubCategory
+
 class PapersListSerializer(serializers.ModelSerializer):
     type = serializers.SlugRelatedField(slug_field='name', queryset=Type.objects.all())
     category = serializers.SlugRelatedField(slug_field='name', queryset=Category.objects.all())
     subcategory = serializers.SlugRelatedField(slug_field='name', queryset=SubCategory.objects.all())
+    file_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Papers
         fields = '__all__'
 
+    def get_file_url(self, obj):
+        request = self.context.get('request')
+        if obj.file:
+            return request.build_absolute_uri(obj.file.url)
+        return None
+
     def create(self, validated_data):
-    # Directly use the instances from validated_data
+        # Directly use the instances from validated_data
         type_instance = validated_data.pop('type')
         category_instance = validated_data.pop('category')
         subcategory_instance = validated_data.pop('subcategory')
@@ -76,7 +86,6 @@ class PapersListSerializer(serializers.ModelSerializer):
             **validated_data
         )
         return paper
-
 
     def update(self, instance, validated_data):
         # Handle updating related fields
@@ -98,5 +107,3 @@ class PapersListSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
-
