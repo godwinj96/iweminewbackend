@@ -49,12 +49,14 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
+LOGIN_URL = 'account_login'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permission.IsAuthenticated',
+       'rest_framework.permissions.IsAuthenticated',
     )
 
 }
@@ -80,6 +82,7 @@ EMAIL_HOST_PASSWORD = 'publisher123'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = 'support@iwemiresearch.org'
 
 
 # Application definition

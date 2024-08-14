@@ -1,11 +1,12 @@
 from django.urls import path, include
-from .views import CustomRegisterView
+from .views import *
 from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
     # Custom registration view
     path('register/', CustomRegisterView.as_view(), name='rest_register'),
+    path('profile/', ProfileUpdateView.as_view(), name='profile_update'),
     
     # Auth-related views
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
