@@ -64,7 +64,7 @@ class Papers(models.Model):
     comments = models.TextField(null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)
     resource_id = models.CharField(max_length=255, null=True, blank=True)
-    new_price = models.IntegerField(null=True, blank=True)
+    # new_price = models.IntegerField(null=True, blank=True)
 
     def cover_url(self):
         return f"{settings.WEBSITE_URL}{self.cover_page.url}"
