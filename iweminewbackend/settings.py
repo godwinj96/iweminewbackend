@@ -86,6 +86,9 @@ REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER': 'useraccount.serializers.CustomPasswordResetSerializer',
 }
 
+DJANGO_REST_AUTH_PASSWORD_RESET_CONFIRM = 'http://iweminewbackend.onrender.com/password/reset/confirm/{uid}/{token}'
+
+
 # Email server settings /////////////////////////////////////////////////////////////////////////////////////////////
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
