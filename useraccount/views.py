@@ -26,7 +26,7 @@ class CustomRegisterView(RegisterView):
         
 
 
-class ProfileUpdateView(generics.UpdateAPIView):
+class ProfileUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 

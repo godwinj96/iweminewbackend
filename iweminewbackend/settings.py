@@ -55,14 +55,19 @@ LOGIN_URL = "https//:127.0.0.1:8000/api/auth/login/"
 JWT_AUTH_COOKIE = 'iwemiresearch-auth'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    ],
     'DEFAULT_PERMISSION_CLASSES': (
     #    'rest_framework.permissions.IsAuthenticated',
     )
 
 }
+
+# if DEBUG:
+#     REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"].append(
+#         "rest_framework.authentication.SessionAuthentication"
+#     )
 
 # CORS_ALLOWED_ORIGINS = [
 #     'https://127.0.0.1:8000',
@@ -77,15 +82,19 @@ REST_AUTH = {
     "REGISTER_SERIALIZER": "useraccount.serializers.CustomRegisterSerializer"
 }                       
 
-# Email server settings
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER': 'useraccount.serializers.CustomPasswordResetSerializer',
+}
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email server settings /////////////////////////////////////////////////////////////////////////////////////////////
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'box2458.bluehost.com'
 EMAIL_HOST_USER = 'support@iwemiresearch.org'
 EMAIL_HOST_PASSWORD = 'publisher123'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'support@iwemiresearch.org'
 
 
