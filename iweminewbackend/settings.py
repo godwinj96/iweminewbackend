@@ -69,10 +69,11 @@ REST_FRAMEWORK = {
 #         "rest_framework.authentication.SessionAuthentication"
 #     )
 
-# CORS_ALLOWED_ORIGINS = [
-#     'https://127.0.0.1:8000',
-#     'https://127.0.0.1:3000',
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'https://127.0.0.1:8000',
+    'https://127.0.0.1:3000',
+    'http://localhost:5173'
+]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
