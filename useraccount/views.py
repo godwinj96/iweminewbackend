@@ -9,7 +9,8 @@ from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework import generics, permissions
 from .models import User
-from .serializers import ProfileSerializer
+from .serializers import *
+from dj_rest_auth.views import PasswordResetView
 
 class CustomRegisterView(RegisterView):
     
@@ -32,5 +33,9 @@ class ProfileUpdateView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+    
+
+class CustomPasswordResetView(PasswordResetView):
+    serializer_class = CustomPasswordResetSerializer
         
         

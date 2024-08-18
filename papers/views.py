@@ -15,10 +15,6 @@ class PaperList(generics.ListCreateAPIView):
         return Papers.objects.all()
 
 
-from rest_framework import generics
-from rest_framework.exceptions import NotFound
-from .models import Papers
-from .serializers import PapersListSerializer
 
 class PaperDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PapersListSerializer

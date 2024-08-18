@@ -3,6 +3,7 @@ from dj_rest_auth.serializers import PasswordResetSerializer
 from django.urls import reverse
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import User
+from django.conf import settings
 
 class CustomRegisterSerializer(RegisterSerializer):
     name = serializers.CharField(max_length=255)
@@ -19,16 +20,86 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['name', 'last_name', 'avatar', 'education', 'institution']
 
-class CustomPasswordResetSerializer(PasswordResetSerializer):
-    def get_email_options(self):
-        """
-        Override this method to change the reset link in the email.
-        """
-        request = self.context.get('request')
-        frontend_url = "http://iweminewbackend.onrender.com/password-reset/confirm/"  # Your React frontend URL
-        return {
-            'email_template_name': 'registration/password_reset_email.html',
-            'extra_email_context': {
-                'frontend_url': frontend_url
+
+import logging
+logger = logging.getLogger(__name__)
+
+
+# class CustomPasswordResetSerializer(PasswordResetSerializer):
+#     def get_email_options(self):
+#         """
+#         Override this method to change the reset link in the email.
+#         """
+#         print("Using custom password reset serializer")
+#         request = self.context.get('request')
+#         frontend_url = "http://iweminewbackend.onrender.com/password-reset/confirm/"  # Your React frontend URL
+#         return {
+#             'html_email_template_name': 'registration/password_reset_email.html',
+#             'extra_email_context': {
+#                 'frontend_url': frontend_url
+#             },
+#             'subject': 'Reset Password'
+#         }
+
+
+
+from django.contrib.sites.shortcuts import get_current_site
+from allauth.account.utils import (
+    filter_users_by_email, user_pk_to_url_str, user_username
+)
+from allauth.utils import build_absolute_uri
+from allauth.account.adapter import get_adapter
+from allauth.account.forms import default_token_generator
+from allauth.account import app_settings
+from dj_rest_auth.serializers import PasswordResetSerializer, AllAuthPasswordResetForm
+
+class CustomAllAuthPasswordResetForm(AllAuthPasswordResetForm):
+    def save(self, request, **kwargs):
+        current_site = get_current_site(request)
+        email = self.cleaned_data['email']
+        token_generator = kwargs.get('token_generator', default_token_generator)
+
+        for user in self.users:
+            temp_key = token_generator.make_token(user)
+            uidb64 = user_pk_to_url_str(user)
+
+             # Log the uidb64 and token
+            print(f"UIDB64: {uidb64}")
+            print(f"Token: {temp_key}")
+
+            # Build the path using uid and token
+            path = f"password-reset/confirm/{uidb64}/{temp_key}/"
+            
+            # Use your custom frontend URL here
+            frontend_url = "https://iwemiresearchnewfrontend.onrender.com/"  # Replace with your actual frontend URL
+            reset_url = f"{frontend_url}{path}"
+            
+            # Log the URLs for debugging purposes
+            print(f"Frontend reset URL: {reset_url}")
+
+            # Context to be passed to the email template
+            context = {
+                "current_site": current_site,
+                "user": user,
+                "password_reset_url": reset_url,
+                "request": request,
+                "path": path,
             }
-        }
+
+            if app_settings.AUTHENTICATION_METHOD != app_settings.AuthenticationMethod.EMAIL:
+                context['username'] = user_username(user)
+                
+            # Send the email
+            get_adapter(request).send_mail(
+                'account/email/password_reset_key', email, context
+            )
+
+        return self.cleaned_data['email']
+
+class CustomPasswordResetSerializer(PasswordResetSerializer):
+    def validate_email(self, value):
+        # Use the custom reset form
+        self.reset_form = CustomAllAuthPasswordResetForm(data=self.initial_data)
+        if not self.reset_form.is_valid():
+            raise serializers.ValidationError(self.reset_form.errors)
+        return value
