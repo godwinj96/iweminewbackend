@@ -24,7 +24,12 @@ urlpatterns = [
     path('api/papers/', include('papers.urls')),
     path('api/auth/', include('useraccount.urls')),
     path('api/auth/', include('dj_rest_auth.urls')),
-] 
+    path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('account/', include('allauth.urls')),
+
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    

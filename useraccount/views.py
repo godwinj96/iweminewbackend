@@ -12,19 +12,35 @@ from .models import User
 from .serializers import *
 from dj_rest_auth.views import PasswordResetView
 
-class CustomRegisterView(RegisterView):
+# class CustomRegisterView(RegisterView):
+#     serializer_class = CustomRegisterSerializer
     
+#     def perform_create(self, serializer):
+#         print("perform_create is called")
+#         try:
+#             serializer.save(self.request)
+#         except IntegrityError as e:
+#             print(f"IntegrityError caught: {str(e)}")
+#             raise ValidationError({"error": "This email is already in use."})
+#         except Exception as e:
+#             print(f"Unexpected error: {str(e)}")
+#             raise ValidationError({"error": "An unexpected error occurred."})
+        
+class CustomRegisterView(RegisterView):
+    serializer_class = CustomRegisterSerializer
+
     def perform_create(self, serializer):
-        print("perform_create is called")
+        print("Perform Create Called")
+        print("Serializer Data:", serializer.validated_data)  # Debugging print
         try:
-            serializer.save(self.request)
+            user = serializer.save(self.request)
+            print("User Created in View:", user)
         except IntegrityError as e:
             print(f"IntegrityError caught: {str(e)}")
             raise ValidationError({"error": "This email is already in use."})
         except Exception as e:
             print(f"Unexpected error: {str(e)}")
             raise ValidationError({"error": "An unexpected error occurred."})
-        
 
 
 class ProfileUpdateView(generics.RetrieveUpdateAPIView):

@@ -10,11 +10,15 @@ class CustomUserManager(UserManager):
     def _create_user(self, name, email, password, **extra_fields):
         if not email:
             raise ValueError('You have not specified a valid email address')
-        
+
         email = self.normalize_email(email)
         user = self.model(email=email, name=name, **extra_fields)
+        print("Preparing to set password")  # Debug print
         user.set_password(password)
+        print("Saving user")  # Debug print
         user.save(using=self.db)
+
+        print("User Created:", user)  # Debug print
 
         return user
     
@@ -52,4 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['name', ]
+
+
+
 

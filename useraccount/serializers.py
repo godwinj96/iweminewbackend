@@ -12,8 +12,40 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     def get_cleaned_data(self):
         data = super().get_cleaned_data()
+        print("Cleaned Data:", data)
         data['name'] = self.validated_data.get('name', '')
+        data['last_name'] = self.validated_data.get('last_name', '')
+        print(data)
         return data
+    
+    # def save(self, *args, **kwargs):
+    #     user = super().save(*args, **kwargs)
+    #     user.name = self.validated_data.get('name')
+    #     user.last_name = self.validated_data.get('last_name')
+    #     user.save()
+    #     print(user)
+    #     return user
+    
+
+    def save(self, request):
+        name = self.validated_data.get('name')
+        last_name = self.validated_data.get('last_name')
+        email = self.validated_data.get('email')
+        password = self.validated_data.get('password1')
+
+        print(f"Creating user with: name={name}, last_name={last_name}, email={email}")
+
+        user = User.objects.create_user(
+            name=name,
+            last_name=last_name,
+            email=email,
+            password=password
+        )
+
+        print("User Created:", user)
+        return user
+    
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -103,3 +135,8 @@ class CustomPasswordResetSerializer(PasswordResetSerializer):
         if not self.reset_form.is_valid():
             raise serializers.ValidationError(self.reset_form.errors)
         return value
+
+
+from allauth.account.signals import email_confirmation_sent
+
+print(email_confirmation_sent(request, confirmation, signup))

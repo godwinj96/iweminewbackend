@@ -49,6 +49,8 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
+ACCOUNT_EMAIL_NOTIFICATIONS =True
+
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = "https//:127.0.0.1:8000/api/auth/login/"
 
@@ -57,6 +59,8 @@ JWT_AUTH_COOKIE = 'iwemiresearch-auth'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': (
     #    'rest_framework.permissions.IsAuthenticated',
@@ -87,12 +91,27 @@ REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER': 'useraccount.serializers.CustomPasswordResetSerializer',
 }
 
+DJANGO_REST_AUTH = {
+    'EMAIL_VERIFICATION': 'mandatory',  # or 'optional'
+    'SERIALIZERS': {
+        'REGISTER_SERIALIZER': 'useraccount.serializers.CustomRegisterSerializer',
+    },
+}
+
 DJANGO_REST_AUTH_PASSWORD_RESET_CONFIRM = 'http://iweminewbackend.onrender.com/password/reset/confirm/{uid}/{token}'
+
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 
 
 # Email server settings /////////////////////////////////////////////////////////////////////////////////////////////
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'box2458.bluehost.com'
 EMAIL_HOST_USER = 'support@iwemiresearch.org'
 EMAIL_HOST_PASSWORD = 'publisher123'
@@ -135,11 +154,11 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

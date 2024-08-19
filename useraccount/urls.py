@@ -14,7 +14,7 @@ urlpatterns = [
     path('profile/', ProfileUpdateView.as_view(), name='profile_update'),
 
     # Password reset views
-    path('password/reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password/reset/', CustomPasswordResetView.as_view(), name='password_reset'),
     # The confirm URL needs to capture uidb64 and token
     path('password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
