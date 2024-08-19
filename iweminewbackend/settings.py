@@ -76,7 +76,9 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://127.0.0.1:3000',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://iwemiresearchnewfrontend.onrender.com',
+    'https://*',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
