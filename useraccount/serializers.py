@@ -137,6 +137,6 @@ class CustomPasswordResetSerializer(PasswordResetSerializer):
         return value
 
 
-from allauth.account.signals import email_confirmation_sent
+# from allauth.account.signals import email_confirmation_sent
 
-print(email_confirmation_sent(request, confirmation, signup))
+# print(email_confirmation_sent(request, confirmation, signup))
