@@ -50,7 +50,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['name', 'last_name', 'email', 'avatar', 'education', 'institution']
+        fields = ['__all__']
 
 
 import logging

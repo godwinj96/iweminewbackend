@@ -149,6 +149,7 @@ INSTALLED_APPS = [
 
     'papers',
     'useraccount',
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -244,3 +245,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Stripe Settings //////////////////////////////////////////
+
+STRIPE_PUBLIC_KEY = 'pk_test_51Pl654BtS3lVeLJEYpzqhlEkp4B9qmaX8ch4gJDslvwEm0kTw06sOZJ9Pc9J0VlC2wP2hiFqa0R43nHcXCwLFQWW00QtE9aDAU'
+STRIPE_SECRET_KEY = 'sk_test_51Pl654BtS3lVeLJEyM36zEK5fBflWOA45UKmJHcxxkEg7lof2yyQSOOXrSGyGKj9ylPcGAsjfHThiS9eddfht7Mr001JYwVL0g'
