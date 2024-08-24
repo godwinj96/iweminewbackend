@@ -54,6 +54,7 @@ class Papers(models.Model):
     type = models.ForeignKey(Type, related_name='type', on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, related_name='category', on_delete=models.SET_NULL, null=True, blank=True)
     subcategory = models.ForeignKey(SubCategory, related_name='subcategory', on_delete=models.SET_NULL, null=True, blank=True)
+    uploaded_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, null = False, blank = True)
     year_published = models.CharField(max_length=255, null=True, blank=True)
     date_uploaded = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to=get_paper_file_path, null=True, blank=True)
