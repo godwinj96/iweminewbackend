@@ -77,6 +77,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://127.0.0.1:3000',
     'http://localhost:5173',
+    'http://localhost:5174',
     'https://iwemiresearchnewfrontend.onrender.com',
     'https://*',
 ]
