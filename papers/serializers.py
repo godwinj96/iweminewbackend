@@ -90,16 +90,29 @@ class PapersListSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # Handle updating related fields
         if 'type' in validated_data:
-            type_name = validated_data.pop('type')['name']
-            instance.type = Type.objects.get(name=type_name)
+            # Ensure we get the actual object and not a dictionary
+            type_instance = validated_data.pop('type')
+            if isinstance(type_instance, dict):
+                type_name = type_instance['name']
+                instance.type = Type.objects.get(name=type_name)
+            else:
+                instance.type = type_instance
 
         if 'category' in validated_data:
-            category_name = validated_data.pop('category')['name']
-            instance.category = Category.objects.get(name=category_name)
+            category_instance = validated_data.pop('category')
+            if isinstance(category_instance, dict):
+                category_name = category_instance['name']
+                instance.category = Category.objects.get(name=category_name)
+            else:
+                instance.category = category_instance
 
         if 'subcategory' in validated_data:
-            subcategory_name = validated_data.pop('subcategory')['name']
-            instance.subcategory = SubCategory.objects.get(name=subcategory_name)
+            subcategory_instance = validated_data.pop('subcategory')
+            if isinstance(subcategory_instance, dict):
+                subcategory_name = subcategory_instance['name']
+                instance.subcategory = SubCategory.objects.get(name=subcategory_name)
+            else:
+                instance.subcategory = subcategory_instance
 
         # Update the remaining fields
         for attr, value in validated_data.items():
