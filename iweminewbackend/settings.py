@@ -32,7 +32,7 @@ AUTH_USER_MODEL = 'useraccount.User'
 
 SITE_ID = 1
 
-WEBSITE_URL = 'https://localhost:8000'
+WEBSITE_URL = 'https://api.iwemiresearch.org'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
@@ -78,6 +78,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1:3000',
     'http://localhost:5173',
     'http://localhost:5174',
+    'https://iwemiresearch.org',
     'https://iwemiresearchnewfrontend.onrender.com',
     'https://*',
 ]
