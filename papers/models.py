@@ -50,7 +50,7 @@ class Papers(models.Model):
     name = models.CharField(primary_key=True, max_length=500)
     author = models.CharField(max_length=255)
     abstract = models.TextField(null=True, blank=True)
-    cover_page = models.ImageField(max_length=500, upload_to=get_paper_cover_path, null=True, blank=True)
+    cover_page = models.ImageField(max_length=450, upload_to=get_paper_cover_path, null=True, blank=True)
     type = models.ForeignKey(Type, related_name='type', on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, related_name='category', on_delete=models.SET_NULL, null=True, blank=True)
     subcategory = models.ForeignKey(SubCategory, related_name='subcategory', on_delete=models.SET_NULL, null=True, blank=True)
