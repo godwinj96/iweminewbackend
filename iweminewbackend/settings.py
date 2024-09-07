@@ -83,6 +83,15 @@ CORS_ALLOWED_ORIGINS = [
     'https://*',
 ]
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'OPTIONS'
+]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 REST_AUTH = {

@@ -103,7 +103,7 @@ class CustomAllAuthPasswordResetForm(AllAuthPasswordResetForm):
             path = f"password-reset/confirm/{uidb64}/{temp_key}/"
             
             # Use your custom frontend URL here
-            frontend_url = "https://iwemiresearchnewfrontend.onrender.com/"  # Replace with your actual frontend URL
+            frontend_url = "https://iwemiresearch.org/"  # Replace with your actual frontend URL
             reset_url = f"{frontend_url}{path}"
             
             # Log the URLs for debugging purposes
