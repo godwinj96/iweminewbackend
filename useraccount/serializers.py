@@ -61,7 +61,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['name', 'last_name', 'email', 'avatar', 'education', 'institution', 'is_staff', 'is_publisher', 'orders']
+        fields = ['id', 'name', 'last_name', 'email', 'avatar', 'education', 'institution', 'is_staff', 'is_publisher', 'orders']
 
 
 import logging
