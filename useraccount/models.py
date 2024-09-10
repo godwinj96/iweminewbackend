@@ -34,6 +34,7 @@ class CustomUserManager(UserManager):
     
 
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True, db_index=True)
@@ -59,4 +60,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 
+class Orders(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    paper = models.ForeignKey('papers.Papers', on_delete=models.CASCADE, related_name="orders") 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
+    time_created = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=100)  # e.g., 'completed', 'pending', etc.
 
+    def __str__(self):
+        return f"{self.user.name}'s Order for {self.paper.name}"

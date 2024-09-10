@@ -2,7 +2,7 @@ from rest_framework import serializers
 from dj_rest_auth.serializers import PasswordResetSerializer
 from django.urls import reverse
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import User
+from .models import User, Orders
 from django.conf import settings
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -47,10 +47,21 @@ class CustomRegisterSerializer(RegisterSerializer):
     
 
 
+class OrderSerializer(serializers.ModelSerializer):
+    paper_name = serializers.CharField(source='paper.name', read_only=True)
+
+    class Meta:
+        model = Orders
+        fields = ['id', 'user', 'paper_name', 'time_created', 'status']
+        read_only_fields = ['user', 'created_at']
+
+
 class ProfileSerializer(serializers.ModelSerializer):
+    orders = OrderSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ['name', 'last_name', 'email', 'avatar', 'education', 'institution', 'is_staff', 'is_publisher',]
+        fields = ['name', 'last_name', 'email', 'avatar', 'education', 'institution', 'is_staff', 'is_publisher', 'orders']
 
 
 import logging

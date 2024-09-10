@@ -1,20 +1,17 @@
 from django.conf import settings
 from django.db import models
-
+import os
 import uuid
+import re
 
 from useraccount.models import User
 
 # Create your models here.
 
-import os
 
-import os
-import uuid
 
 MAX_PATH_LENGTH = 255  # Maximum path length on Windows
 
-import re
 
 def sanitize_filename(name):
     """
@@ -126,7 +123,12 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
+class Comments(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=True)
+    posted_by = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
+    content = models.TextField(null=True, blank=True)
 
 
 class Papers(models.Model):
@@ -145,7 +147,7 @@ class Papers(models.Model):
     is_approved = models.BooleanField(null=True, blank=True)
     citations = models.IntegerField(null=True, blank=True)
     references = models.TextField(null=True, blank=True)
-    comments = models.TextField(null=True, blank=True)
+    comments = models.ForeignKey(Comments, related_name='type', on_delete=models.SET_NULL, null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)
     resource_id = models.CharField(max_length=255, null=True, blank=True)
     # new_price = models.IntegerField(null=True, blank=True)
