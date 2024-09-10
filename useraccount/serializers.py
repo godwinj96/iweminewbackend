@@ -5,22 +5,6 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import User, Orders
 from django.conf import settings
 
-
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from django.conf import settings
-
-def send_verification_email(user):
-    subject = 'Verify Your Email Address'
-    html_message = render_to_string('registration/email_verification.html', {'user': user})
-    plain_message = strip_tags(html_message)
-    from_email = settings.DEFAULT_FROM_EMAIL
-    recipient_list = [user.email]
-    
-    send_mail(subject, plain_message, from_email, recipient_list, html_message=html_message)
-
-
 class CustomRegisterSerializer(RegisterSerializer):
     name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
@@ -127,10 +111,10 @@ class CustomAllAuthPasswordResetForm(AllAuthPasswordResetForm):
             print(f"Token: {temp_key}")
 
             # Build the path using uid and token
-            path = f"password-reset/confirm/{uidb64}/{temp_key}/"
+            path = f"password-reset/confirm/{uidb64}/{temp_key}"
             
             # Use your custom frontend URL here
-            frontend_url = "https://iwemiresearch.org/"  # Replace with your actual frontend URL
+            frontend_url = "https://www.iwemiresearch.org/"  # Replace with your actual frontend URL
             reset_url = f"{frontend_url}{path}"
             
             # Log the URLs for debugging purposes
