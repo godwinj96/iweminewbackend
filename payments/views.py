@@ -14,7 +14,7 @@ class CreateStripeCheckoutSessionView(APIView):
             currency = request.data.get('currency', 'ngn')
             success_url = request.data.get('success_url', 'http://localhost:5173/success')
             cancel_url = request.data.get('cancel_url', 'http://localhost:5173/cancel')
-            name = request.data.get('name', 'Research Paper')
+            name = request.data.get('productname', 'Research paper')
 
             print(request.data)
 

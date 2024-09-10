@@ -13,6 +13,9 @@ urlpatterns = [
     path('register/', CustomRegisterView.as_view(), name='rest_register'),
     path('profile/', ProfileUpdateView.as_view(), name='profile_update'),
 
+    # Create a new order
+    path('profile/orders/', ProfileOrderView.as_view(), name='profile_orders'),
+
     # Password reset views
     path('password/reset/', CustomPasswordResetView.as_view(), name='password_reset'),
     # The confirm URL needs to capture uidb64 and token
