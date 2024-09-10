@@ -67,6 +67,17 @@ from .serializers import OrderSerializer
 class ProfileOrderView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+       
+
+        # Create a new order for the user
+        order = Orders.objects.filter()
+
+        serializer = OrderSerializer(order, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+
     def post(self, request):
         user = request.user  # Get the authenticated user
         order_status = request.data.get('status')
@@ -85,6 +96,7 @@ class ProfileOrderView(APIView):
         # Serialize the new order data and return a response
         serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
     
     def patch(self, request):
         user = request.user  # Get the authenticated user

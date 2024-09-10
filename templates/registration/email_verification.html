@@ -1,0 +1,45 @@
+
+<body
+  style="
+    font-size:16px;
+    font-family:sans-serif;
+    background-color:#f1f1f1;
+    color:#113;
+    padding:60px;
+    width:100%;">
+  <a  
+    href="https://iwemiresearch.org">
+    <img src="https://i.ibb.co/164jxSm/new-iwemi.png" alt="new-iwemi"  width=150px style="
+        margin:0 auto;">
+  </a>
+    <div class="center">
+    <h2>Welcome, {{ .Data.firstName }} </h2>
+
+    <p>Hi, there.</p>
+
+    <p>Thank you for signing up on Iwemi Research, Africa's leading research platform.</p>
+    <p >Follow this link to verify your email and complete your signup:</p>
+
+
+    <div style="margin:40px 0px 40px 0px;">
+      <p style="color:#fff;">
+        <a href="{{ .RedirectTo }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup" 
+        style="text-decoration:none;
+        padding:15px; 
+        background-color:#2563eb; 
+        width:fit-content; 
+        color:#fff;  
+        border-radius:7px;
+        margin:40px 0px 40px 0px;">
+          Verify your email
+        </a>
+      </p>
+    </div>
+
+    <p>If you have any questions send an email to support@iwemiresearch.org and we will be happy to assist you.</p>
+    <p>If you did not sign up for an account on iwemiresearch.org, please ignore this email.</p>
+    
+    <p>Best Regards,</p>
+    <p>The Iwemi Research Team</p>
+    </div>
+</body>
