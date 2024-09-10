@@ -100,10 +100,10 @@ class CustomAllAuthPasswordResetForm(AllAuthPasswordResetForm):
             print(f"Token: {temp_key}")
 
             # Build the path using uid and token
-            path = f"password-reset/confirm/{uidb64}/{temp_key}/"
+            path = f"password-reset/confirm/{uidb64}/{temp_key}"
             
             # Use your custom frontend URL here
-            frontend_url = "https://iwemiresearch.org/"  # Replace with your actual frontend URL
+            frontend_url = "https://www.iwemiresearch.org/"  # Replace with your actual frontend URL
             reset_url = f"{frontend_url}{path}"
             
             # Log the URLs for debugging purposes
