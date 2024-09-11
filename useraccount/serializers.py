@@ -48,12 +48,13 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    paper_name = serializers.CharField(source='paper.name', read_only=True)
+    paper_name = serializers.CharField(source='paper.name', read_only=True)  # Return the paper's name
+    user_name = serializers.CharField(source='user.name', read_only=True)  # Return the user's name
 
     class Meta:
         model = Orders
-        fields = ['id', 'user', 'paper_name', 'time_created', 'status']
-        read_only_fields = ['user', 'created_at']
+        fields = ['id', 'user_name', 'paper_name', 'time_created', 'status']  # Add 'user_name' to fields
+        read_only_fields = ['user', 'time_created']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
