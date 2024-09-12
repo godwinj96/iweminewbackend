@@ -11,4 +11,5 @@ urlpatterns = [
     path('category/<str:name>/', views.CategoryDetail.as_view(), name='api_category_detail'),
     path('subcategory/', views.SubCategoryList.as_view(), name='api_subcategory_list'),
     path('subcategory/<str:name>/', views.SubCategoryDetail.as_view(), name='api_subcategory_detail'),
+    path('download/', views.send_download_link, name='api_papers_download'),
 ]
