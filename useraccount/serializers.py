@@ -8,42 +8,25 @@ from django.conf import settings
 class CustomRegisterSerializer(RegisterSerializer):
     name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    # avatar = serializers.ImageField(upload_to="uploads/avatars/" null=True, blank=True)
 
     def get_cleaned_data(self):
         data = super().get_cleaned_data()
-        print("Cleaned Data:", data)
         data['name'] = self.validated_data.get('name', '')
         data['last_name'] = self.validated_data.get('last_name', '')
-        print(data)
         return data
-    
-    # def save(self, *args, **kwargs):
-    #     user = super().save(*args, **kwargs)
-    #     user.name = self.validated_data.get('name')
-    #     user.last_name = self.validated_data.get('last_name')
-    #     user.save()
-    #     print(user)
-    #     return user
-    
 
     def save(self, request):
-        name = self.validated_data.get('name')
-        last_name = self.validated_data.get('last_name')
-        email = self.validated_data.get('email')
-        password = self.validated_data.get('password1')
-
-        print(f"Creating user with: name={name}, last_name={last_name}, email={email}")
-
+        # Ensure that the custom user manager is used
         user = User.objects.create_user(
-            name=name,
-            last_name=last_name,
-            email=email,
-            password=password
+            email=self.validated_data.get('email'),
+            name=self.validated_data.get('name'),
+            last_name=self.validated_data.get('last_name'),
+            password=self.validated_data.get('password1')
         )
-
-        print("User Created:", user)
+        
+        # Optionally add any additional logic here, such as sending confirmation email
         return user
+
     
 
 
@@ -51,9 +34,10 @@ class OrderSerializer(serializers.ModelSerializer):
     paper_name = serializers.CharField(source='paper.name', read_only=True)  # Return the paper's name
     user_name = serializers.CharField(source='user.name', read_only=True)  # Return the user's name
     user_id = serializers.UUIDField(source='user.id', read_only=True)
+    
     class Meta:
         model = Orders
-        fields = ['id', 'user_id', 'user_name', 'paper_name', 'time_created', 'status']  # Add 'user_name' to fields
+        fields = ['id', 'user_id', 'user_name', 'paper_name', 'time_created', 'status', 'download_links']  # Add 'user_name' to fields
         read_only_fields = ['user', 'time_created']
 
 

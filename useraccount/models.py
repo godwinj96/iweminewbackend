@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 
 from django.db import models
+from allauth.account.models import EmailAddress
 
 # Create your models here.
 
@@ -13,12 +14,19 @@ class CustomUserManager(UserManager):
 
         email = self.normalize_email(email)
         user = self.model(email=email, name=name, **extra_fields)
-        print("Preparing to set password")  # Debug print
-        user.set_password(password)
-        print("Saving user")  # Debug print
-        user.save(using=self.db)
 
-        print("User Created:", user)  # Debug print
+        # Set the password
+        user.set_password(password)
+
+        # Save the user first to get a valid user ID
+        user.save(using=self.db)
+        
+        # Create the EmailAddress and send confirmation
+        email_address = EmailAddress.objects.create(user=user, email=user.email, primary=True)
+        email_address.send_confirmation()
+        
+        print(email_address)  # Debug print
+        print("Email confirmation sent")  # Debug print
 
         return user
     
@@ -31,7 +39,6 @@ class CustomUserManager(UserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(name, email, password, **extra_fields)
-    
 
 
 
@@ -63,6 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Orders(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     paper = models.ForeignKey('papers.Papers', on_delete=models.CASCADE, related_name="orders") 
+    download_links = models.CharField(max_length=255, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     time_created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=100)  # e.g., 'completed', 'pending', etc.

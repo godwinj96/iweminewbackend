@@ -32,7 +32,7 @@ AUTH_USER_MODEL = 'useraccount.User'
 
 SITE_ID = 1
 
-WEBSITE_URL = 'https://api.iwemiresearch.org'
+WEBSITE_URL = 'https://127.0.0.1:8000'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
@@ -51,8 +51,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_EMAIL_NOTIFICATIONS =True
 
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = "https//:127.0.0.1:8000/api/auth/login/"
+LOGIN_URL = "https://www.iwemiresearch.org/login"
 
 JWT_AUTH_COOKIE = 'iwemiresearch-auth'
 
@@ -132,6 +134,23 @@ EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'support@iwemiresearch.org'
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # You can change to INFO once resolved
+#         },
+#     },
+# }
+
 
 
 # Application definition
