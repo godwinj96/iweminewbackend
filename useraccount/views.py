@@ -129,3 +129,16 @@ class ProfileOrderView(APIView):
         serializer = OrderSerializer(order)
         print(f"Updated Order Data: {serializer.data}")  # Debug print to check if download_links is serialized
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    
+    def delete(self, request):
+        user = request.user  # Get the authenticated user
+        order_id = request.data.get('id')  # Get the order ID from the request body
+
+        try:
+            # Find the order to delete (it must belong to the authenticated user)
+            order = Orders.objects.get(id=order_id, user=user)
+            order.delete()  # Delete the order
+
+            return Response({"message": "Order deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        except Orders.DoesNotExist:
+            return Response({"error": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
