@@ -15,6 +15,7 @@ urlpatterns = [
 
     # Create a new order
     path('profile/orders/', ProfileOrderView.as_view(), name='profile_orders'),
+    path('profile/orders/<uuid:pk>/', ProfileOrderView.as_view(), name='profile_order'),
 
     # Password reset views
     path('password/reset/', CustomPasswordResetView.as_view(), name='password_reset'),

@@ -67,10 +67,20 @@ from .serializers import OrderSerializer
 class ProfileOrderView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        order = Orders.objects.filter()
-        serializer = OrderSerializer(order, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, pk=None):
+        if pk:
+            try:
+                # Find the specific order by ID and ensure it's tied to the user
+                order = Orders.objects.get(id=pk, user=request.user)
+                serializer = OrderSerializer(order)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except Orders.DoesNotExist:
+                return Response({"error": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            # Return all orders for the user if no specific order ID is provided
+            orders = Orders.objects.filter(user=request.user)
+            serializer = OrderSerializer(orders, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         user = request.user  # Get the authenticated user
@@ -92,24 +102,18 @@ class ProfileOrderView(APIView):
         serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def patch(self, request):
+    def patch(self, request, pk=None):
         user = request.user  # Get the authenticated user
         order_status = request.data.get('status')
         paper_id = request.data.get('paper_id')  # Get the paper ID from the request body
-        order_id = request.data.get('id')
         download_links = request.data.get('download_links')  # Only include this in patch request
 
-        if not paper_id:
-            return Response({"error": "Paper ID is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            paper = Papers.objects.get(id=paper_id)  # Get the paper object
-        except Papers.DoesNotExist:
-            return Response({"error": "Paper not found."}, status=status.HTTP_404_NOT_FOUND)
+        if not pk:
+            return Response({"error": "Order ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # Find the existing order by ID and ensure it's tied to the user
-            order = Orders.objects.get(id=order_id, user=user)
+            order = Orders.objects.get(id=pk, user=user)
             
             # Update status and download_links if provided
             if order_status:
@@ -129,14 +133,16 @@ class ProfileOrderView(APIView):
         serializer = OrderSerializer(order)
         print(f"Updated Order Data: {serializer.data}")  # Debug print to check if download_links is serialized
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-    
-    def delete(self, request):
+
+    def delete(self, request, pk=None):
         user = request.user  # Get the authenticated user
-        order_id = request.data.get('id')  # Get the order ID from the request body
+
+        if not pk:
+            return Response({"error": "Order ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # Find the order to delete (it must belong to the authenticated user)
-            order = Orders.objects.get(id=order_id, user=user)
+            order = Orders.objects.get(id=pk, user=user)
             order.delete()  # Delete the order
 
             return Response({"message": "Order deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
